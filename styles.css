@@ -1,0 +1,76 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: black;
+  position: relative;
+}
+
+.container{
+  color: white;
+  position: absolute;
+  font-family: monospace;
+  white-space: nowrap;
+}
+
+.floating {
+  -webkit-animation-name: Floatingx;
+  -webkit-animation-duration: 3s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: ease-in-out;
+  -moz-animation-name: Floating;
+  -moz-animation-duration: 3s;
+  -moz-animation-iteration-count: infinite;
+  -moz-animation-timing-function: ease-in-out;
+  animation-name: Floating;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@-webkit-keyframes Floatingx {
+  from { -webkit-transform: translateY(0px);  }
+  65%  { -webkit-transform: translateY(15px); }
+  to   { -webkit-transform: translateY(-0px); }
+}
+
+@-moz-keyframes Floating {
+  from { -moz-transform: translateY(0px);  }
+  65%  { -moz-transform: translateY(15px); }
+  to   { -moz-transform: translateY(-0px); }
+}
+
+@keyframes Floating {
+  from { transform: translateY(0px);  }
+  65%  { transform: translateY(15px); }
+  to   { transform: translateY(-0px); }
+}
+
+.scroll-left {
+  -moz-animation: scroll-left 30s linear infinite;
+  -webkit-animation: scroll-left 30s linear infinite;
+  animation: scroll-left 30s linear infinite;
+}
+
+@-moz-keyframes scroll-left {
+  0%   { left: 100%; }
+  100% { left: -100%; }
+}
+@-webkit-keyframes scroll-left {
+  0%   { left: 100%; }
+  100% { left: -100%; }
+}
+@keyframes scroll-left {
+  0%   { left: 100%; }
+  100% { left: -100%; }
+}
+
+.drift-left {
+  -moz-animation: scroll-left 60s linear infinite, Floating 3s ease-in-out infinite;
+  -webkit-animation: scroll-left 60s linear infinite, Floatingx 3s ease-in-out infinite;
+  animation: scroll-left 60s linear infinite, Floating 3s ease-in-out infinite;
+}
