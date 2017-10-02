@@ -67,15 +67,18 @@ body {
 
 @-moz-keyframes scroll-left {
   0%   { left: 100%; }
-  100% { left: -100%; }
+  50%  { left: 0; }
+  100% { left: 100%; }
 }
 @-webkit-keyframes scroll-left {
   0%   { left: 100%; }
-  100% { left: -100%; }
+  50%  { left: 0; }
+  100% { left: 100%; }
 }
 @keyframes scroll-left {
   0%   { left: 100%; }
-  100% { left: -100%; }
+  50%  { left: 0; }
+  100% { left: 100%; }
 }
 
 .drift-left {
