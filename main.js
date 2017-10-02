@@ -40,6 +40,7 @@ function processRequests(requests) {
   }
 
   function update($div, request) {
+    var macList = Object.keys(request.macs);
     var seconds = Date.now()/1000 - request.lastSeen;
     var maxTop = $div.parent().outerHeight() - $div.outerHeight();
     var decayTop = maxTop*Math.log2(seconds*0.05)/10;
@@ -48,7 +49,12 @@ function processRequests(requests) {
     var fontSize = Math.min(maxFontSizePercent, 100 + sizeScalar*request.count);
     $div.css('top', top + 'px').css('opacity', opacity);
     $div.find('.name').text(request.name).css('font-size', fontSize + '%');
-    $div.find('.stats').text(request.count + '/' + Object.keys(request.macs).length);
+    $div.find('.stats').text(request.count + '/' + macList.length);
+
+    $div.find('.macs').html('');
+    macList.forEach(function(mac) {
+      $div.find('.macs').append(macToColor(mac));
+    });
 
     console.log(
       $div.text(),
@@ -56,6 +62,21 @@ function processRequests(requests) {
       $div.css('top'),
       $div.css('opacity')
     );
+  }
+
+  function macToColor(mac) {
+    var $user = $('<div>');
+    var octets = mac.split(':');
+    var color = '#' + octets.splice(0,3).join('');
+    $user.append(createColorSpan(color));
+    var color = '#' + octets.splice(0,3).join('');
+    $user.append(createColorSpan(color));
+    return $user;
+  }
+
+  function createColorSpan(color) {
+      var $span = $('<span class="color">').css('background-color', color);
+      return $span;
   }
 }
 
@@ -76,57 +97,54 @@ $(function() {
         name: "ADM",
         lastSeen: 1506890491,
         count: 5000,
-        macs: { 'mac1': 1, 'mac2': 2 },
-        users: 300
+        "macs" : {
+          "84:fc:fe:8e:ea:da" : 49,
+          "84:a1:34:e5:24:a7" : 8,
+        },
       },
       "LAG": {
         name: "LAG",
         lastSeen: 1506885284,
         count: 50,
-        macs: { 'mac1': 1, 'mac2': 2 },
-        users: 12
+        "macs" : {
+          "84:fc:fe:8e:ea:da" : 49,
+        },
       },
       "TechInc": {
         name: "TechInc",
         lastSeen: 1506882114,
         count: 100,
         macs : { "50:68:0a:03:94:3f" : 8 },
-        users: 22
       },
       "Foo": {
         name: "Foo",
         lastSeen: 1506890491,
         count: 500,
         macs : { "50:68:0a:03:94:3f" : 8 },
-        users: 30
       },
       "Bar": {
         name: "Bar",
         lastSeen: 1506885284,
         count: 50,
         macs : { "50:68:0a:03:94:3f" : 8 },
-        users: 12
       },
       "Baz": {
         name: "Baz",
         lastSeen: 1506882114,
         count: 5,
         macs : { "50:68:0a:03:94:3f" : 8 },
-        users: 2
       },
       "Bat": {
         name: "Bat",
         lastSeen: Date.now()/1000,
         count: 800,
         macs : { "50:68:0a:03:94:3f" : 8 },
-        users: 2
       },
       "zero": {
         name: "zero",
         lastSeen: Date.now()/1000 - 5000,
         count: 0,
         macs : { "50:68:0a:03:94:3f" : 8 },
-        users: 0
       },
       "wolf" : {
           "count" : 5,

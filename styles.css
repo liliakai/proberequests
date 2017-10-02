@@ -25,6 +25,12 @@ body {
 .container .stats {
   font-size: small;
 }
+.container .color {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin: 1px;
+}
 
 .floating {
   -webkit-animation-name: Floatingx;
