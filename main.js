@@ -116,14 +116,14 @@ $(function() {
       },
       "Bat": {
         name: "Bat",
-        lastSeen: 100,
+        lastSeen: Date.now()/1000,
         count: 800,
         macs : { "50:68:0a:03:94:3f" : 8 },
         users: 2
       },
       "zero": {
         name: "zero",
-        lastSeen: 0,
+        lastSeen: Date.now()/1000 - 5000,
         count: 0,
         macs : { "50:68:0a:03:94:3f" : 8 },
         users: 0
@@ -134,11 +134,11 @@ $(function() {
             "a4:d1:d2:7e:a7:a5" : 5
           },
           "name" : "wolf",
-          "lastSeen" : 1506895762
+          lastSeen: Date.now()/1000 - 250,
       },
       "Dolhuis" : {
           "name" : "Dolhuis",
-          "lastSeen" : 1506895962,
+          lastSeen: Date.now()/1000 - 500,
           "macs" : {
             "84:fc:fe:8e:ea:da" : 49,
             "84:a1:34:e5:24:a7" : 8,
@@ -151,7 +151,7 @@ $(function() {
             "50:68:0a:03:94:3f" : 8
           },
           "count" : 8,
-          "lastSeen" : 1506895538,
+          lastSeen: Date.now()/1000 - 2000,
           "name" : "budapest"
       },
       "UPC1920526" : {
@@ -159,11 +159,11 @@ $(function() {
           "macs" : {
             "a4:77:33:ca:c4:b0" : 1
           },
-          "lastSeen" : 1506895801,
+          lastSeen: Date.now()/1000 - 100000,
           "name" : "UPC1920526"
       },
       "HG655D-86090D" : {
-          "lastSeen" : 1506895796,
+          lastSeen: Date.now()/1000 - 10000,
           "name" : "HG655D-86090D",
           "count" : 9,
           "macs" : {
@@ -171,7 +171,7 @@ $(function() {
           }
       },
       "@TOP-160-5G" : {
-          "lastSeen" : 1506895801,
+          lastSeen: Date.now()/1000 - 1000,
           "name" : "@TOP-160-5G",
           "count" : 4,
           "macs" : {
@@ -180,7 +180,7 @@ $(function() {
       },
       "FdF 1992" : {
           "name" : "FdF 1992",
-          "lastSeen" : 1506895527,
+          lastSeen: Date.now()/1000 - 100,
           "count" : 6,
           "macs" : {
             "a4:d1:d2:7e:a7:a5" : 6
