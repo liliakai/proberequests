@@ -15,6 +15,15 @@ body {
   position: absolute;
   font-family: monospace;
   white-space: nowrap;
+  transition: top 1s ease-in-out;
+
+}
+.container .name {
+  display: block;
+  line-height: 0.7em;
+}
+.container .stats {
+  font-size: small;
 }
 
 .floating {

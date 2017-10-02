@@ -8,8 +8,8 @@ var timeScalar = (1 - minOpacity) / msTilFadeAway; // % opacity per ms
 var sizeScalar = (maxFontSizePercent - 100) / dynamicScaleMinCount;
 function processRequests(requests) {
   var body = $('body');
+  var template = $('#template').html();
   var totalRequests = Object.keys(requests).length;
-  var index = 0;
   var maxCount = 0;
   $.each(requests, render);
 
@@ -24,43 +24,38 @@ function processRequests(requests) {
     }
 
     var $div = elements[request.name];
-    var top = 100 * index / totalRequests;
 
-    if (!$div) {
-      $div = create(request, index);
-      $div.css('top', top + '%');
-
-      $div.appendTo(body);
-
+    if ($div) {
+      update($div, request);
+    } else {
+      $div = create(request);
       elements[request.name] = $div;
-      console.log(request.name, 'y', top);
     }
-
-    update($div, request, top);
-
-    index += 1;
   }
 
   function create(request) {
-    var $div = $('<div>');
-    $div.addClass('container')
-      .addClass('drift-left')
-      .attr('id', request.name);
-
-    $div[0].addEventListener('animationiteration', function(e) {
-      if (e.animationName === 'scroll-left') {
-        $div.css('top', $div.data('top') + '%');
-      }
-    });
-
+    var $div = $(template).appendTo(body);
+    update($div, request);
     return $div;
   }
 
-  function update($div, request, top) {
-    $div.css('font-size', Math.min(maxFontSizePercent, 100 + sizeScalar*request.count) + '%')
-      .css('opacity', Math.max(minOpacity, 1 - ((Date.now() - request.lastSeen*1000) * timeScalar)))
-      .text(request.name + ' ' + request.count + '/' + Object.keys(request.macs).length)
-      .data('top', top);
+  function update($div, request) {
+    var seconds = Date.now()/1000 - request.lastSeen;
+    var maxTop = $div.parent().outerHeight() - $div.outerHeight();
+    var decayTop = maxTop*Math.log2(seconds*0.05)/10;
+    var top = Math.max(0, Math.min(maxTop, decayTop));
+    var opacity = Math.max(minOpacity, 1 - ((Date.now() - request.lastSeen*1000) * timeScalar));
+    var fontSize = Math.min(maxFontSizePercent, 100 + sizeScalar*request.count);
+    $div.css('top', top + 'px').css('opacity', opacity);
+    $div.find('.name').text(request.name).css('font-size', fontSize + '%');
+    $div.find('.stats').text(request.count + '/' + Object.keys(request.macs).length);
+
+    console.log(
+      $div.text(),
+      $div.css('font-size'),
+      $div.css('top'),
+      $div.css('opacity')
+    );
   }
 }
 
@@ -197,18 +192,28 @@ $(function() {
     var names = Object.keys(testRequests);
     var requests = {};
     function increment(request) {
-        request.lastSeen = Date.now();
+        request.lastSeen = Date.now() / 1000;
         request.count += 1;
     }
+    increment(testRequests[names[names.length - 1]]);
     setInterval(function() {
-        increment(testRequests.ADM);
+        if (Math.random() < 0.1) {
+          increment(testRequests.ADM);
+        }
 
-        if (counter % 5 === 0) {
+/*
+        if (Math.random() > 0.01) {
+          increment(testRequests.TechInc);
+        }
+
+        if (Math.random() > 0.1) {
           increment(testRequests.LAG);
         }
 
-        if (counter % 10 === 0) {
-          increment(testRequests.TechInc);
+*/
+        if (Math.random() < 0.1) {
+          var randomName = names[Math.floor(Math.random() * names.length/2)];
+          increment(testRequests[randomName]);
         }
 
         var name = names[counter % names.length];
