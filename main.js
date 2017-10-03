@@ -108,6 +108,140 @@ $(function() {
           "84:a1:34:e5:24:a7" : 8,
         },
       },
+      "AndroidAP" : {
+          "lastSeen" : 1507065161,
+          "name" : "AndroidAP",
+          "count" : 81,
+          "macs" : {
+            "10:0b:a9:73:38:00" : 81
+          }
+      },
+      "FRITZ!Box7312 " : {
+          "macs" : {
+            "30:a8:db:1a:f9:68" : 7
+          },
+          "lastSeen" : 1507064946,
+          "name" : "FRITZ!Box7312 ",
+          "count" : 7
+      },
+      "iNEO.net-2Ghz" : {
+          "lastSeen" : 1507065019,
+          "name" : "iNEO.net-2Ghz",
+          "count" : 3,
+          "macs" : {
+            "64:a7:69:9f:78:b0" : 3
+          }
+      },
+      "verea" : {
+          "lastSeen" : 1507062131,
+          "count" : 6,
+          "name" : "verea",
+          "macs" : {
+            "00:40:9d:67:55:37" : 6
+          }
+      },
+      "BBS" : {
+          "macs" : {
+            "78:9f:70:7a:2e:d0" : 15,
+            "bc:75:74:39:e8:b2" : 1153,
+            "b0:ec:71:1a:39:4f" : 9
+          },
+          "name" : "BBS",
+          "count" : 1177,
+          "lastSeen" : 1507065247
+      },
+      "yoyo guest" : {
+          "lastSeen" : 1507064722,
+          "count" : 29,
+          "name" : "yoyo guest",
+          "macs" : {
+            "da:a1:19:71:f3:a6" : 1,
+            "da:a1:19:e1:52:10" : 2,
+            "da:a1:19:9d:f2:0f" : 3,
+            "da:a1:19:00:7d:ad" : 1,
+            "da:a1:19:0e:84:37" : 1,
+            "da:a1:19:91:f7:d5" : 3,
+            "da:a1:19:50:c5:e2" : 1,
+            "da:a1:19:db:ff:ba" : 5,
+            "da:a1:19:42:14:72" : 1,
+            "da:a1:19:ec:16:aa" : 1,
+            "da:a1:19:18:06:22" : 1,
+            "da:a1:19:02:15:24" : 1,
+            "da:a1:19:db:0c:15" : 1,
+            "da:a1:19:a6:c0:da" : 1,
+            "da:a1:19:81:86:26" : 3,
+            "da:a1:19:b3:07:c9" : 3
+          }
+      },
+      "H369AB20C10" : {
+          "name" : "H369AB20C10",
+          "count" : 12,
+          "lastSeen" : 1507061380,
+          "macs" : {
+            "24:92:0e:70:9d:ac" : 9,
+            "b4:6d:83:ab:bc:24" : 3
+          }
+      },
+      "iNEO.net-5Ghz" : {
+          "name" : "iNEO.net-5Ghz",
+          "count" : 43,
+          "lastSeen" : 1507065026,
+          "macs" : {
+            "00:26:c6:26:21:96" : 22,
+            "c0:bd:d1:b6:d7:e1" : 21
+          }
+      },
+      "SitecomBE6B48" : {
+          "count" : 32,
+          "name" : "SitecomBE6B48",
+          "lastSeen" : 1507064694,
+          "macs" : {
+            "18:2a:7b:54:ec:10" : 9,
+            "88:83:22:99:8f:b6" : 14,
+            "64:6c:b2:a9:42:71" : 9
+          }
+      },
+      "Sitecom26F35E" : {
+          "name" : "Sitecom26F35E",
+          "count" : 2,
+          "lastSeen" : 1507061831,
+          "macs" : {
+            "54:60:09:55:18:72" : 2
+          }
+      },
+      "FRITZ!Box Fon WLAN 7360" : {
+          "count" : 2,
+          "name" : "FRITZ!Box Fon WLAN 7360",
+          "lastSeen" : 1507060040,
+          "macs" : {
+            "00:23:14:1a:b4:e0" : 2
+          }
+      },
+      "BBS-guest" : {
+          "macs" : {
+            "cc:61:e5:44:2c:dd" : 12,
+            "f0:5b:7b:45:c4:83" : 5
+          },
+          "name" : "BBS-guest",
+          "count" : 17,
+          "lastSeen" : 1507064888
+      },
+      "UPC245312527" : {
+          "name" : "UPC245312527",
+          "count" : 46,
+          "lastSeen" : 1507060825,
+          "macs" : {
+            "e0:9d:31:81:0a:60" : 46
+          }
+      },
+      "SpeedTouch49B1E7" : {
+          "name" : "SpeedTouch49B1E7",
+          "count" : 1,
+          "lastSeen" : 1507059638,
+          "macs" : {
+            "00:23:14:1a:b4:e0" : 1
+          }
+      },
       "LAG": {
         name: "LAG",
         lastSeen: 1506885284,
@@ -224,17 +358,6 @@ $(function() {
         if (Math.random() < 0.1) {
           increment(testRequests.ADM);
         }
-
-/*
-        if (Math.random() > 0.01) {
-          increment(testRequests.TechInc);
-        }
-
-        if (Math.random() > 0.1) {
-          increment(testRequests.LAG);
-        }
-
-*/
         if (Math.random() < 0.1) {
           var randomName = names[Math.floor(Math.random() * names.length/2)];
           increment(testRequests[randomName]);
