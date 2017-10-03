@@ -11,6 +11,7 @@ function processRequests(requests) {
   var template = $('#template').html();
   var totalRequests = Object.keys(requests).length;
   var maxCount = 0;
+  var created = false;
   $.each(requests, render);
 
   // dynamically compute a new sizeScalar such that the most seen entry is
@@ -28,8 +29,11 @@ function processRequests(requests) {
     if ($div) {
       update($div, request);
     } else {
-      $div = create(request);
-      elements[request.name] = $div;
+      if (!created) {
+        created = true;
+        $div = create(request);
+        elements[request.name] = $div;
+      }
     }
   }
 
