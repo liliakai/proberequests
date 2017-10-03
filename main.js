@@ -44,7 +44,7 @@ function processRequests(requests) {
   }
 
   function update($div, request) {
-    var macList = Object.keys(request.macs);
+    var macList = Object.keys(request.macs).sort();
     var seconds = Date.now()/1000 - request.lastSeen;
     var maxTop = $div.parent().outerHeight() - $div.outerHeight();
     var decayTop = maxTop*Math.log2(seconds*0.05)/10;
