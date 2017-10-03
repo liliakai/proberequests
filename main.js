@@ -60,12 +60,14 @@ function processRequests(requests) {
       $div.find('.macs').append(macToColor(mac));
     });
 
+    /*
     console.log(
       $div.text(),
       $div.css('font-size'),
       $div.css('top'),
       $div.css('opacity')
     );
+    */
   }
 
   function macToColor(mac) {
