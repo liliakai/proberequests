@@ -16,7 +16,7 @@ body {
   font-family: monospace;
   white-space: nowrap;
   transition: top 1s ease-in-out;
-
+  text-shadow: 0 0 10px black;
 }
 .container .name {
   display: block;
