@@ -1,10 +1,11 @@
-var elements = {};
 var dynamicScaleMinCount = 100;        // Min count for dynamic scale
 var maxFontSizePercent = 2000;          // percent
 var minOpacity = 0.1;                   // [0, 1]
 var msTilFadeAway = 1000 * 60 * 60 * 3; // 3 hours in ms
 var startTime = Date.now() / 1000;
 
+var elements = {};
+var data = {};
 var timeScalar = (1 - minOpacity) / msTilFadeAway; // % opacity per ms
 var sizeScalar = (maxFontSizePercent - 100) / dynamicScaleMinCount;
 function processRequests(requests) {
@@ -17,9 +18,12 @@ function processRequests(requests) {
   var maxCount = 0;
   var maxLastSeen = 0;
   var created = false;
+
   $.each(requests, render);
   startTime = maxLastSeen;
-  console.log('done');
+
+  var numElements = Object.keys(elements).length;
+  console.log('elements:', numElements);
 
   // dynamically compute a new sizeScalar such that the most seen entry is
   // assigned the maxFontSizePercent.
@@ -62,7 +66,7 @@ function processRequests(requests) {
     var opacity = Math.max(minOpacity, 1 - ((startTime - request.lastSeen) * timeScalar));
     var fontSize = Math.min(maxFontSizePercent, 100 + sizeScalar*macList.length);
 
-    var data = {
+    var current = {
       fontSize: fontSize,
       opacity: opacity,
       top: top,
@@ -72,16 +76,16 @@ function processRequests(requests) {
     };
 
     var changed = false;
-    var prev = $div.data();
+    var prev = data[request.name] || {};
 
-    for (prop in data) {
-      if (prev[prop] !== data[prop]) {
-        $div.data(prop, data[prop])
+    for (prop in current) {
+      if (prev[prop] !== current[prop]) {
         changed = true;
       }
     }
 
     if (changed) {
+      data[request.name] = current;
       console.log('updating', request.name);
       $div.css('top', top + 'px').css('opacity', opacity);
       $div.find('.name').text(request.name).css('font-size', fontSize + '%');
@@ -116,8 +120,8 @@ function processRequests(requests) {
 
 $(function() {
 
-  //poll('probereq.json');
-  test('probereq.json');
+  poll('probereq.json');
+  //test('probereq.json');
 
   function poll(url) {
     $.getJSON(url, function(data) {
