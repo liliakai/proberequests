@@ -140,8 +140,8 @@ function processRequests(requests) {
 
 $(function() {
 
-  poll('probereq.json');
-  //test('probereq.json');
+  //poll('probereq.json');
+  test('probereq.json');
 
   function poll(url) {
     $.getJSON(url, function(data) {
