@@ -88,13 +88,14 @@ function processRequests(requests) {
 
 $(function() {
 
-  poll();
-  //test();
+  poll('probereq.json');
+  //test('probereq.json');
 
-  function poll() {
-    setInterval(function() {
-        $.getJSON('probereq.json', processRequests);
-    }, 1000);
+  function poll(url) {
+    $.getJSON(url, function(data) {
+      processRequests(data);
+      setTimeout(poll.bind(null, url), 1000);
+    });
   }
 
   function test() {
