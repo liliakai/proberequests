@@ -8,6 +8,7 @@ html, body {
 body {
   background: black;
   position: relative;
+  overflow: hidden;
 }
 
 .container{
@@ -25,8 +26,12 @@ body {
 .container .stats {
   font-size: small;
 }
-.container .color {
+.container .user {
   display: inline-block;
+  margin-right: 5px;
+}
+.container .color {
+  display: block;
   width: 5px;
   height: 5px;
   margin: 1px;

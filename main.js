@@ -71,7 +71,7 @@ function processRequests(requests) {
   }
 
   function macToColor(mac) {
-    var $user = $('<div>');
+    var $user = $('<div>').addClass('user');
     var octets = mac.split(':');
     var color = '#' + octets.splice(0,3).join('');
     $user.append(createColorSpan(color));
