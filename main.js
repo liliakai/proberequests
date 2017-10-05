@@ -1,3 +1,4 @@
+var maxElements = 100;
 var dynamicScaleMinCount = 100;        // Min count for dynamic scale
 var maxFontSizePercent = 2000;          // percent
 var minOpacity = 0.1;                   // [0, 1]
@@ -22,8 +23,23 @@ function processRequests(requests) {
   $.each(requests, render);
   startTime = maxLastSeen;
 
-  var numElements = Object.keys(elements).length;
-  console.log('elements:', numElements);
+  var allNames = Object.keys(data);
+
+  var recent = allNames.sort(function(a, b) {
+    return data[a].lastSeen - data[b].lastSeen;
+  }).slice(-1 * maxElements);
+
+  $.each(elements, function(name, element) {
+    if (recent.indexOf(name) < 0) {
+      if (element.parent().length > 0) {
+        element.remove();
+      }
+    } else {
+      if (elements[name].parent().length === 0) {
+        body.append(elements[name]);
+      }
+    }
+  });
 
   // dynamically compute a new sizeScalar such that the most seen entry is
   // assigned the maxFontSizePercent.
@@ -60,7 +76,7 @@ function processRequests(requests) {
   function update($div, request) {
     var macList = Object.keys(request.macs).sort();
     var seconds = startTime - request.lastSeen;
-    var maxTop = $div.parent().outerHeight() - $div.outerHeight();
+    var maxTop = body.outerHeight() - $div.outerHeight();
     var decayTop = maxTop*Math.log2(seconds*0.05)/10;
     var top = Math.max(0, Math.min(maxTop, decayTop));
     var opacity = Math.max(minOpacity, 1 - ((startTime - request.lastSeen) * timeScalar));
@@ -86,10 +102,14 @@ function processRequests(requests) {
 
     if (changed) {
       data[request.name] = current;
-      console.log('updating', request.name);
-      $div.css('top', top + 'px').css('opacity', opacity);
+      $div.css({
+        top: top + 'px',
+        opacity: opacity
+      });
       $div.find('.name').text(request.name).css('font-size', fontSize + '%');
-      $div.find('.stats').text(request.count + '/' + macList.length);
+      $div.find('.stats').text(
+        request.count + '/' + macList.length
+      );
 
       $div.find('.macs').html('');
 
