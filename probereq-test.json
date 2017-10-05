@@ -34,6 +34,7 @@
    "Hopling Technologies 0" : {
       "name" : "Hopling Technologies 0",
       "macs" : {
+         "e4:98:d1:4d:af:8c" : 61,
          "00:02:2d:2d:77:87" : 5
       },
       "count" : 5,
@@ -42,6 +43,7 @@
    "SG-5GHz" : {
       "name" : "SG-5GHz",
       "macs" : {
+         "e4:98:d1:4d:af:8c" : 61,
          "00:80:c6:2e:a1:53" : 6
       },
       "lastSeen" : 1507149537,
@@ -50,6 +52,7 @@
    "Madame Tussauds Amsterdam" : {
       "name" : "Madame Tussauds Amsterdam",
       "macs" : {
+         "e4:98:d1:4d:af:8c" : 61,
          "00:01:24:14:af:fb" : 5
       },
       "lastSeen" : 1507149538,
@@ -60,6 +63,8 @@
       "lastSeen" : 1507149532,
       "name" : " FREEWIFI Pikoteo",
       "macs" : {
+         "e4:98:d1:4d:af:8c" : 61,
+         "e0:98:61:fe:0e:85" : 2,
          "08:00:46:46:7e:18" : 5
       }
    },
@@ -68,6 +73,8 @@
       "lastSeen" : 1507149703,
       "name" : "upc1366788",
       "macs" : {
+         "e4:98:d1:4d:af:8c" : 61,
+         "e0:98:61:fe:0e:85" : 2,
          "00:90:4c:86:d5:30" : 8
       }
    },
@@ -76,12 +83,16 @@
       "lastSeen" : 1507149538,
       "name" : "VodafoneMobileWiFi-BFC423",
       "macs" : {
+         "e4:98:d1:4d:af:8c" : 61,
+         "e0:98:61:fe:0e:85" : 2,
          "00:02:2d:2d:b4:3a" : 5
       }
    },
    "A06848" : {
       "name" : "A06848",
       "macs" : {
+         "e4:98:d1:4d:af:8c" : 61,
+         "e0:98:61:fe:0e:85" : 2,
          "00:0b:ac:dd:b8:aa" : 6
       },
       "lastSeen" : 1507149532,
@@ -89,6 +100,8 @@
    },
    "D2eGFPdat" : {
       "macs" : {
+         "e4:98:d1:4d:af:8c" : 61,
+         "e0:98:61:fe:0e:85" : 2,
          "00:09:e8:e0:94:25" : 4
       },
       "name" : "D2eGFPdat",
@@ -100,6 +113,8 @@
       "count" : 5,
       "name" : "FREEWIFI Meram",
       "macs" : {
+         "e4:98:d1:4d:af:8c" : 61,
+         "e0:98:61:fe:0e:85" : 2,
          "00:0f:3d:6c:ee:89" : 5
       }
    }
