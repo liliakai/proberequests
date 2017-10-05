@@ -114,8 +114,8 @@ function processRequests(requests) {
 
 $(function() {
 
-  poll('probereq.json');
-  //test('probereq.json');
+  //poll('probereq.json');
+  test('probereq.json');
 
   function poll(url) {
     $.getJSON(url, function(data) {
@@ -126,26 +126,24 @@ $(function() {
 
   function test(url) {
     $.getJSON(url, function(testRequests) {
-      var counter = 0;
       var names = Object.keys(testRequests);
-      var requests = {};
-      function increment(request) {
-          request.lastSeen = Date.now() / 1000;
-          request.count += 1;
-      }
-      increment(testRequests[names[names.length - 1]]);
-      setInterval(function() {
+      run();
+
+      function run() {
           if (Math.random() < 0.1) {
             var randomName = names[Math.floor(Math.random() * names.length/2)];
             increment(testRequests[randomName]);
           }
 
-          var name = names[counter % names.length];
-          requests[name] = testRequests[name];
+          processRequests(testRequests);
+          setTimeout(run, 1000);
+      };
 
-          processRequests(requests);
-          counter += 1;
-      }, 1000);
+      function increment(request) {
+          request.lastSeen = Date.now() / 1000;
+          request.count += 1;
+          console.log('simulating probe request', request.name);
+      }
     });
   }
 });
