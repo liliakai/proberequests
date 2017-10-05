@@ -60,7 +60,7 @@ function processRequests(requests) {
     var decayTop = maxTop*Math.log2(seconds*0.05)/10;
     var top = Math.max(0, Math.min(maxTop, decayTop));
     var opacity = Math.max(minOpacity, 1 - ((startTime - request.lastSeen) * timeScalar));
-    var fontSize = Math.min(maxFontSizePercent, 100 + sizeScalar*macList.length) + '%';
+    var fontSize = Math.min(maxFontSizePercent, 100 + sizeScalar*macList.length);
 
     var data = {
       fontSize: fontSize,
