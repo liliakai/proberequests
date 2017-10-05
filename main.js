@@ -8,7 +8,7 @@ var startTime = Date.now() / 1000;
 var timeScalar = (1 - minOpacity) / msTilFadeAway; // % opacity per ms
 var sizeScalar = (maxFontSizePercent - 100) / dynamicScaleMinCount;
 function processRequests(requests) {
-  console.log('updating');
+  console.log('processing');
   var body = $('body');
   var template = $('#template').html();
   var totalRequests = Object.keys(requests).length;
@@ -58,20 +58,46 @@ function processRequests(requests) {
     var decayTop = maxTop*Math.log2(seconds*0.05)/10;
     var top = Math.max(0, Math.min(maxTop, decayTop));
     var opacity = Math.max(minOpacity, 1 - ((startTime - request.lastSeen) * timeScalar));
-    var fontSize = Math.min(maxFontSizePercent, 100 + sizeScalar*macList.length);
-    $div.css('top', top + 'px').css('opacity', opacity);
-    $div.find('.name').text(request.name).css('font-size', fontSize + '%');
-    $div.find('.stats').text(request.count + '/' + macList.length);
+    var fontSize = Math.min(maxFontSizePercent, 100 + sizeScalar*macList.length) + '%';
 
-    $div.find('.macs').html('');
-    macList.forEach(function(mac) {
-      $div.find('.macs').append(macToColor(mac));
-    });
+    var data = {
+      fontSize: fontSize,
+      opacity: opacity,
+      top: top,
+      count: request.count,
+      users: macList.length,
+      lastSeen: request.lastSeen,
+    };
 
+    var changed = false;
+    var prev = $div.data();
+
+    for (prop in data) {
+      if (prev[prop] !== data[prop]) {
+        $div.data(prop, data[prop])
+        changed = true;
+      }
+    }
+
+    if (changed) {
+      console.log('updating', request.name);
+      $div.css('top', top + 'px').css('opacity', opacity);
+      $div.find('.name').text(request.name).css('font-size', fontSize + '%');
+      $div.find('.stats').text(request.count + '/' + macList.length);
+
+      $div.find('.macs').html('');
+
+      var $users = $div.find('.macs');
+      macList.forEach(function(mac) {
+        if ($users.find('.' + mac).length === 0) {
+          $users.append(macToColor(mac));
+        }
+      });
+    }
   }
 
   function macToColor(mac) {
-    var $user = $('<div>').addClass('user');
+    var $user = $('<div>').addClass('user').addClass(mac);
     var octets = mac.split(':');
     var color = '#' + octets.splice(0,3).join('');
     $user.append(createColorSpan(color));
