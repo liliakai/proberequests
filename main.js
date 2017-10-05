@@ -8,10 +8,12 @@ var startTime = Date.now() / 1000;
 var timeScalar = (1 - minOpacity) / msTilFadeAway; // % opacity per ms
 var sizeScalar = (maxFontSizePercent - 100) / dynamicScaleMinCount;
 function processRequests(requests) {
-  console.log('processing');
   var body = $('body');
   var template = $('#template').html();
   var totalRequests = Object.keys(requests).length;
+
+  console.log('processing', totalRequests, 'ssids');
+
   var maxCount = 0;
   var maxLastSeen = 0;
   var created = false;
