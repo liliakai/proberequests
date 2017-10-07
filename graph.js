@@ -1,7 +1,22 @@
-var vis = d3.select("#graph").append("svg");
 var body = $('body');
+var svg = d3.select("#graph").append("svg");
+svg.attr("width", body.outerWidth()).attr("height", body.outerHeight());
+var width = +svg.attr("width");
+var height = +svg.attr("height");
 
-vis.attr("width", "100%").attr("height", "100%");
+
+var g = svg.append("g");
+var zoom = d3.zoom().on("zoom", function() {
+  g.attr("transform", d3.event.transform);
+});
+svg.append("rect")
+      .attr("width", width)
+      .attr("height", height)
+      .style("fill", "none")
+      .style("pointer-events", "all")
+      .call(zoom.scaleExtent([1 / 2, 4]));
+
+
 var circleWidth = 5;
 
 var fontFamily = 'Bree Serif',
@@ -31,13 +46,13 @@ var palette = {
 
 
 function test(url) {
+  var nodes = [];
+  var links = [];
   $.getJSON(url, function(requests) {
-    var nodes = [];
-    var links = [];
     $.each(requests, function(name, request){
       var newNode = request;
       newNode.x = Math.random()*body.outerWidth();
-      newNode.y = Math.random()*body.outerHeight();
+      newNode.y = 0; // 0.0001 * body.outerHeight() * (Date.now()/1000 - request.lastSeen)
       $.each(request.macs, function(mac, count) {
         nodes.forEach(function(node) {
           if (node.macs[mac]) {
@@ -47,49 +62,63 @@ function test(url) {
       });
       nodes.push(newNode);
     });
-    vis.selectAll(".line")
+
+    var simulation = d3.forceSimulation()
+        .nodes(nodes)
+        .force("charge", d3.forceManyBody().strength(-20))
+        .force("link", d3.forceLink(links).strength(0.0005))
+        .force("center", d3.forceCenter())
+        //.force("gravity", d3.forceY(2000).strength(0.000001))
+        .alphaDecay(0);
+
+    var line = g.selectAll(".line")
        .data(links)
           .enter()
-          .append("line")
-          .attr("x1", function(d) { return d.source.x })
-          .attr("y1", function(d) { return d.source.y })
-          .attr("x2", function(d) { return d.target.x })
-          .attr("y2", function(d) { return d.target.y })
-          .style("stroke", "rgb(6,120,155)");
+              .append("line")
+                  .attr("x1", function(d) { return d.source.x })
+                  .attr("y1", function(d) { return d.source.y })
+                  .attr("x2", function(d) { return d.target.x })
+                  .attr("y2", function(d) { return d.target.y })
+                  .style("stroke", "rgb(6,120,155)");
 
-/*
-    var force = d3.layout.force()
-        .nodes(nodes)
-        .links([])
-        .gravity(0.1)
-        .charge(-1000)
-        .size(["100%", "100%"]);
-*/
-    var node = vis.selectAll("circle.node")
-          .data(nodes)
+    var node = g.selectAll("circle.node")
+      .data(nodes)
           .enter().append("g")
-          .attr("class", "node")
-
-          //.call(force.drag);
+          .attr("class", "node");
 
     //CIRCLE
     node.append("svg:circle")
-      .attr("cx", function(d) { return d.x; })
-      .attr("cy", function(d) { return d.y; })
+      .attr("cx", function(d) { return 0; })
+      .attr("cy", function(d) { return 0; })
       .attr("r", circleWidth)
       .attr("fill", function(d, i) { return  palette.pink; });
 
     //TEXT
     node.append("text")
       .text(                function(d, i) { return d.name; })
-      .attr("x",            function(d, i) { return d.x + 10; })
-      .attr("y",            function(d, i) { return d.y + 5; })
+      .attr("x",            function(d, i) { return 10; })
+      .attr("y",            function(d, i) { return  5; })
       .attr("fill",         function(d, i) {  return  palette.paleryellow;  })
       .attr("font-size",    function(d, i) {  return  "1em"; })
       .attr("font-family",  "Bree Serif")
 
+
+    simulation.on("tick", function(e, alpha) {
+      nodes.forEach(function(n) {
+      })
+        node.attr("transform", function(d, i) {
+            return "translate(" + d.x + "," + d.y + ")";
+        });
+
+        line.attr("x1", function(d) { return d.source.x; })
+            .attr("y1", function(d) { return d.source.y; })
+            .attr("x2", function(d) { return d.target.x; })
+            .attr("y2", function(d) { return d.target.y; })
+
+    });
+
   });
 }
 
-test('probereq-test.json');
+test('probereq.json');
 
