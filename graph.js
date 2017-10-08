@@ -19,6 +19,7 @@ svg.append("rect")
 
 
 var circleWidth = 5;
+var rectWidth = 10;
 
 var fontFamily = 'Bree Serif',
     fontSizeHighlight = '1.5em',
@@ -45,39 +46,54 @@ var palette = {
       "yellowgreen": "#738A05"
   }
 
+var macs = {};
+var ssids = {};
+var simulation = d3.forceSimulation()
+    .force("charge", d3.forceManyBody().strength(-25))
+    .force("link", d3.forceLink().distance(100).strength(0.05))
+    .force("center", d3.forceCenter())
+    .force("gravity", d3.forceY(0).strength(0.01))
+    .force("balance", d3.forceX(0).strength(0.01))
+    .alphaDecay(0);
+
+var nodes = simulation.nodes();
+var links = simulation.force("link").links();
 
 function test(url) {
-  var macs = {};
-  var ssids = {};
-  var nodes = [];
-  var links = [];
   $.getJSON(url, function(requests) {
     $.each(requests, function(name, request){
-      var ssid = request;
-      ssid.x = Math.random()*body.outerWidth();
-      ssid.y = Math.random()*body.outerHeight();
-      //ssid.y = 0;
-      //ssid.y = 0.0001 * body.outerHeight() * (Date.now()/1000 - request.lastSeen)
+      var ssid = ssids[request.name];
+      if (!ssid) {
+        ssid = {
+          name: request.name,
+          lastSeen: request.lastSeen,
+          count: request.count,
+          macs: []
+        };
+        nodes.push(ssid);
+        ssids[ssid.name] = ssid;
+        //ssid.y = 0;
+        //ssid.y = 0.0001 * body.outerHeight() * (Date.now()/1000 - request.lastSeen)
+      } else {
+        // update stats
+        ssid.lastSeen = request.lastSeen;
+        ssid.count = request.count;
+      }
       $.each(request.macs, function(address, count) {
         mac = macs[address];
         if (!mac) {
           mac = { address: address, count: count };
-          macs[address] = mac;
           nodes.push(mac);
+          macs[address] = mac;
+        } else {
+          mac.count = count;
         }
-        links.push({ source: mac, target: ssid });
+        if (!ssid.macs[address]) {
+          links.push({ source: mac, target: ssid });
+        }
+        ssid.macs[address] = count;
       });
-      nodes.push(ssid);
-      ssids[ssid.name] = ssid;
     });
-
-    var simulation = d3.forceSimulation()
-        .nodes(nodes)
-        .force("charge", d3.forceManyBody().strength(-15))
-        .force("link", d3.forceLink(links).strength(0.05))
-        .force("center", d3.forceCenter())
-        //.force("gravity", d3.forceY(2000).strength(0.000001))
-        .alphaDecay(0);
 
     var line = g.selectAll(".line")
        .data(links)
@@ -89,19 +105,45 @@ function test(url) {
                   .attr("y2", function(d) { return d.target.y })
                   .style("stroke", "rgb(6,120,155)");
 
-    var mac = g.selectAll("circle.mac")
+    var mac = g.selectAll(".mac")
           .data(d3.values(macs))
           .enter().append("g")
-          .attr("class", "mac")
-          .append("svg:circle")
-            .attr("cx", function(d) { return 0; })
-            .attr("cy", function(d) { return 0; })
-            .attr("r", circleWidth)
-            .attr("fill", function(d, i) { return  palette.green; });
+          .attr("class", "node");
+    var macInner = mac.attr("class", "mac").append("g")
+          .attr("transform", "translate(-" + rectWidth/2 + ",-" + rectWidth/2 + ")");
+    macInner.append("svg:rect")
+          .attr("width", rectWidth + 2)
+          .attr("height", rectWidth + 2)
+          .attr("x", -1)
+          .attr("y", -1)
+          .attr("fill", palette.green)
+    macInner.append("svg:polygon")
+          .attr("points", function(d) {
+            return [
+              [0,0], [0,rectWidth], [rectWidth,0]
+            ].map(function(p) { return p.toString(); }).join(' ');
+          })
+          .attr("fill", function(d, i) {
+            var octets = d.address.split(':');
+            var color = '#' + octets.slice(0,3).join('');
+            return color;
+          });
+    macInner.append("svg:polygon")
+          .attr("points", function(d) {
+            return [
+              [rectWidth,0], [rectWidth,rectWidth], [0, rectWidth]
+            ].map(function(p) { return p.toString(); }).join(' ');
+          })
+          .attr("fill", function(d, i) {
+            var octets = d.address.split(':');
+            var color = '#' + octets.slice(3).join('');
+            return color;
+          });
 
     var ssid = g.selectAll("circle.ssid")
           .data(d3.values(ssids))
           .enter().append("g")
+          .attr("class", "node")
           .attr("class", "ssid");
 
     //CIRCLE
@@ -121,6 +163,7 @@ function test(url) {
       .attr("font-family",  "Bree Serif")
 
 
+    simulation.nodes(nodes);
     simulation.on("tick", function(e, alpha) {
        mac.attr("transform", function(d, i) {
             return "translate(" + d.x + "," + d.y + ")";
