@@ -4,8 +4,9 @@ svg.attr("width", body.outerWidth()).attr("height", body.outerHeight());
 var width = +svg.attr("width");
 var height = +svg.attr("height");
 
-
 var g = svg.append("g");
+g.attr("transform", "translate(" + width/2 + "," + height/2 + ")");
+
 var zoom = d3.zoom().on("zoom", function() {
   g.attr("transform", d3.event.transform);
 });
