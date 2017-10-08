@@ -15,7 +15,7 @@ svg.append("rect")
       .attr("height", height)
       .style("fill", "none")
       .style("pointer-events", "all")
-      .call(zoom.scaleExtent([1 / 2, 4]));
+      .call(zoom);
 
 
 var circleWidth = 5;
