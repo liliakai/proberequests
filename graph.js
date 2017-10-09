@@ -1,9 +1,36 @@
-var body = $('body');
-var svg = d3.select("#graph").append("svg");
-svg.attr("width", body.outerWidth()).attr("height", body.outerHeight());
-var width = +svg.attr("width");
-var height = +svg.attr("height");
+var circleWidth = 5;
+var rectWidth = 10;
+var fontFamily = 'Bree Serif',
+    fontSizeHighlight = '1.5em',
+    fontSizeNormal = '1em';
+var palette = {
+  "lightgray": "#819090",
+  "gray": "#708284",
+  "mediumgray": "#536870",
+  "darkgray": "#475B62",
 
+  "darkblue": "#0A2933",
+  "darkerblue": "#042029",
+
+  "paleryellow": "#FCF4DC",
+  "paleyellow": "#EAE3CB",
+  "yellow": "#A57706",
+  "orange": "#BD3613",
+  "red": "#D11C24",
+  "pink": "#C61C6F",
+  "purple": "#595AB7",
+  "blue": "#2176C7",
+  "green": "#259286",
+  "yellowgreen": "#738A05"
+};
+
+var body = $('body');
+var width = body.outerWidth();
+var height = body.outerHeight();
+
+var svg = d3.select("#graph").append("svg")
+    .attr("width", width)
+    .attr("height", height);
 var g = svg.append("g");
 
 var zoom = d3.zoom().on("zoom", function() {
@@ -18,34 +45,6 @@ svg.append("rect")
       .call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2));
 
 
-var circleWidth = 5;
-var rectWidth = 10;
-
-var fontFamily = 'Bree Serif',
-    fontSizeHighlight = '1.5em',
-    fontSizeNormal = '1em';
-
-var palette = {
-      "lightgray": "#819090",
-      "gray": "#708284",
-      "mediumgray": "#536870",
-      "darkgray": "#475B62",
-
-      "darkblue": "#0A2933",
-      "darkerblue": "#042029",
-
-      "paleryellow": "#FCF4DC",
-      "paleyellow": "#EAE3CB",
-      "yellow": "#A57706",
-      "orange": "#BD3613",
-      "red": "#D11C24",
-      "pink": "#C61C6F",
-      "purple": "#595AB7",
-      "blue": "#2176C7",
-      "green": "#259286",
-      "yellowgreen": "#738A05"
-  }
-
 var macs = {};
 var ssids = {};
 var simulation = d3.forceSimulation()
@@ -59,12 +58,12 @@ var simulation = d3.forceSimulation()
 function test(url) {
   var nodes = simulation.nodes();
   var links = simulation.force("link").links();
-  var added = 1;
 
   $.getJSON(url, function(requests) {
     $.each(requests, function(name, request){
       var ssid = ssids[request.name];
       if (!ssid) {
+        console.log('adding ssid', request.name);
         ssid = {
           name: request.name,
           lastSeen: request.lastSeen,
@@ -73,8 +72,6 @@ function test(url) {
         };
         nodes.push(ssid);
         ssids[ssid.name] = ssid;
-        //ssid.y = 0;
-        //ssid.y = 0.0001 * body.outerHeight() * (Date.now()/1000 - request.lastSeen)
       } else {
         // update stats
         ssid.lastSeen = request.lastSeen;
@@ -83,6 +80,7 @@ function test(url) {
       $.each(request.macs, function(address, count) {
         var mac = macs[address];
         if (!mac) {
+          console.log('adding mac', address);
           mac = { address: address, count: count };
           nodes.push(mac);
           macs[address] = mac;
