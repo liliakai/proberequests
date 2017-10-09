@@ -5,7 +5,6 @@ var width = +svg.attr("width");
 var height = +svg.attr("height");
 
 var g = svg.append("g");
-g.attr("transform", "translate(" + width/2 + "," + height/2 + ")");
 
 var zoom = d3.zoom().on("zoom", function() {
   g.attr("transform", d3.event.transform);
@@ -15,7 +14,8 @@ svg.append("rect")
       .attr("height", height)
       .style("fill", "none")
       .style("pointer-events", "all")
-      .call(zoom);
+      .call(zoom)
+      .call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2));
 
 
 var circleWidth = 5;
