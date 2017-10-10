@@ -157,7 +157,7 @@ function handleJSON(json) {
     .attr("x",            function(d, i) { return 10; })
     .attr("y",            function(d, i) { return  5; })
     .attr("fill",         function(d, i) {  return  palette.paleryellow;  })
-    .attr("font-size",    function(d, i) {  return  "1em"; })
+    .attr("font-size",    function(d, i) {  return  (1 + 0.1*(d.numMacs)) + 'em'; })
     .attr("font-family",  "Bree Serif")
 
   simulation.on("tick", function(e, alpha) {
