@@ -160,15 +160,18 @@ function handleJSON(json) {
     .attr("font-size",    function(d, i) {  return  (1 + 0.1*(d.numMacs)) + 'em'; })
     .attr("font-family",  "Bree Serif")
 
+  mac = macEnter.merge(mac);
+  ssid = ssidEnter.merge(ssid);
+  line = lineEnter.merge(line);
   simulation.on("tick", function(e, alpha) {
-      macEnter.merge(mac).attr("transform", function(d, i) {
+      mac.attr("transform", function(d, i) {
         return "translate(" + d.x + "," + d.y + ")";
       });
-      ssidEnter.merge(ssid).attr("transform", function(d, i) {
+      ssid.attr("transform", function(d, i) {
         return "translate(" + d.x + "," + d.y + ")";
       });
 
-    lineEnter.merge(line).attr("x1", function(d) { return d.source.x; })
+    line.attr("x1", function(d) { return d.source.x; })
         .attr("y1", function(d) { return d.source.y; })
         .attr("x2", function(d) { return d.target.x; })
         .attr("y2", function(d) { return d.target.y; })
