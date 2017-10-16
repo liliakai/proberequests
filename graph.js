@@ -36,14 +36,8 @@ var g = svg.append("g");
 var zoom = d3.zoom().on("zoom", function() {
   g.attr("transform", d3.event.transform);
 });
-svg.append("rect")
-      .attr("width", width)
-      .attr("height", height)
-      .style("fill", "none")
-      .style("pointer-events", "all")
-      .call(zoom)
-      .call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2));
-
+svg.call(zoom)
+   .call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2));
 
 var macs = {};
 var ssids = {};
@@ -54,6 +48,17 @@ var simulation = d3.forceSimulation()
     .force("gravity", d3.forceY(0).strength(0.01))
     .force("balance", d3.forceX(0).strength(0.01))
     .alphaDecay(0);
+
+var drag = d3.drag().on("drag", function dragmove(d, i) {
+  d.fx = d3.event.x;
+  d.fy = d3.event.y;
+}).on("start", function() {
+  console.log('drag start');
+}).on("end", function(d, i) {
+  console.log('drag end');
+  d.fx = null;
+  d.fy = null;
+});
 
 var maxAdded = 0;
 function handleJSON(json) {
@@ -163,6 +168,10 @@ function handleJSON(json) {
   mac = macEnter.merge(mac);
   ssid = ssidEnter.merge(ssid);
   line = lineEnter.merge(line);
+
+  mac.call(drag);
+  ssid.call(drag);
+
   simulation.on("tick", function(e, alpha) {
       mac.attr("transform", function(d, i) {
         return "translate(" + d.x + "," + d.y + ")";
