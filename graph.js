@@ -199,18 +199,17 @@ function handleJSON(json) {
   ssid.call(drag);
 
   simulation.on("tick", function(e, alpha) {
-      mac.attr("transform", function(d, i) {
-        return "translate(" + d.x + "," + d.y + ")";
-      });
-      ssid.attr("transform", function(d, i) {
-        return "translate(" + d.x + "," + d.y + ")";
-      });
+    mac.attr("transform", function(d, i) {
+      return "translate(" + d.x + "," + d.y + ")";
+    });
+    ssid.attr("transform", function(d, i) {
+      return "translate(" + d.x + "," + d.y + ")";
+    });
 
     line.attr("x1", function(d) { return d.source.x; })
         .attr("y1", function(d) { return d.source.y; })
         .attr("x2", function(d) { return d.target.x; })
         .attr("y2", function(d) { return d.target.y; })
-
   });
 }
 
