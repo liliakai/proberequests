@@ -79,11 +79,18 @@ function handleJSON(json) {
         name: request.name,
         lastSeen: request.lastSeen,
         count: request.count,
-        macs: {}
+        macs: {},
+        changed: true,
+        addedAt: Date.now()
       };
       nodes.push(ssid);
       ssids[ssid.name] = ssid;
     } else {
+      if (ssid.lastSeen !== request.lastSeen
+          || ssid.count !== request.count ) {
+        ssid.changed = true;
+      }
+
       // update stats
       ssid.lastSeen = request.lastSeen;
       ssid.count = request.count;
@@ -97,15 +104,23 @@ function handleJSON(json) {
       var mac = macs[address];
       if (!mac) {
         console.log('adding mac', address);
-        mac = { address: address, count: count };
+        mac = {
+          address: address,
+          count: count,
+          changed: true
+        };
         nodes.push(mac);
         macs[address] = mac;
+        ssid.changed = true;
       } else {
+        if (mac.count !== count) {
+          mac.changed = true;
+        }
         mac.count = count;
       }
       if (!ssid.macs[address]) {
         console.log('adding link', mac.address, ssid.name);
-        links.push({ source: mac, target: ssid });
+        links.push({ source: mac, target: ssid, addedAt: Date.now() });
       }
       ssid.macs[address] = count;
     });
