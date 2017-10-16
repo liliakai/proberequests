@@ -214,8 +214,23 @@ function handleJSON(json) {
   });
 }
 
-poll('probereq.json');
-//poll('probereq-test.json');
+$('body').keydown(function(e) {
+  if (e.which === 37) { // left arrow
+    svg.transition().call(zoom.translateBy, 100, 0);
+  }
+  if (e.which === 39) { // right arrow
+    svg.transition().call(zoom.translateBy, -100, 0);
+  }
+  if (e.which === 38) { // up arrow
+    svg.transition().call(zoom.translateBy, 0, 100);
+  }
+  if (e.which === 40) { // down arrow
+    svg.transition().call(zoom.translateBy, 0, -100);
+  }
+});
+
+//poll('probereq.json');
+poll('probereq-test.json');
 
 function poll(url) {
   $.getJSON(url, function(json) {
