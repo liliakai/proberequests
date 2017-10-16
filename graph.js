@@ -186,6 +186,11 @@ function handleJSON(json) {
     .attr("font-size",    function(d, i) { return  (1 + 0.1*(d.numMacs)) + 'em'; })
     .attr("font-family",  "monospace");
 
+  ssid.select("text")
+    .attr("opacity", function(d) {
+      return Math.max(0.5, 1 - (Date.now()/1000 - d.lastSeen) * 0.00001);
+    });
+
   mac = macEnter.merge(mac);
   ssid = ssidEnter.merge(ssid);
   line = lineEnter.merge(line);
