@@ -181,10 +181,10 @@ function handleJSON(json) {
   ssidEnter.append("text")
     .text(                function(d, i) { return d.name; })
     .attr("x",            function(d, i) { return 10; })
-    .attr("y",            function(d, i) { return  5; })
-    .attr("fill",         function(d, i) {  return  palette.paleryellow;  })
-    .attr("font-size",    function(d, i) {  return  (1 + 0.1*(d.numMacs)) + 'em'; })
-    .attr("font-family",  "Bree Serif")
+    .attr("y",            function(d, i) { return 5; })
+    .attr("fill",         function(d, i) { return palette.paleryellow; })
+    .attr("font-size",    function(d, i) { return  (1 + 0.1*(d.numMacs)) + 'em'; })
+    .attr("font-family",  "monospace");
 
   mac = macEnter.merge(mac);
   ssid = ssidEnter.merge(ssid);
