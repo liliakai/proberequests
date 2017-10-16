@@ -188,7 +188,7 @@ function handleJSON(json) {
 
   ssid.select("text")
     .attr("opacity", function(d) {
-      return Math.max(0.5, 1 - (Date.now()/1000 - d.lastSeen) * 0.00001);
+      return Math.max(0.5, 1 - (maxLastSeen - d.lastSeen) * 0.00001);
     });
 
   mac = macEnter.merge(mac);
