@@ -50,8 +50,8 @@ var simulation = d3.forceSimulation()
     .alphaDecay(0);
 
 var drag = d3.drag().on("drag", function dragmove(d, i) {
-		d.x += d3.event.dx;
-		d.y += d3.event.dy;
+  d.x += d3.event.dx;
+  d.y += d3.event.dy;
 });
 
 var maxAdded = 0;
