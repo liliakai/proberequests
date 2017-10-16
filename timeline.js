@@ -57,7 +57,6 @@ var drag = d3.drag().on("drag", function dragmove(d, i) {
 var maxAdded = 0;
 var ssid, mac, line; // selections
 var maxLastSeen = 0;
-var timeOrder = true;
 function handleJSON(json) {
   var nodes = simulation.nodes();
   var links = simulation.force("link").links();
@@ -212,14 +211,12 @@ function handleJSON(json) {
 
   simulation.on("tick", function render(e, alpha) {
     ssid.attr("transform", function(d, i) {
-      if (timeOrder) {
-        var fx = 0.5 * (maxLastSeen - d.lastSeen);
-        var changed = (d.fx !== fx);
-        if (changed && fx === 0 ) {
-          d.y = 0;
-        }
-        d.fx = fx;
+      var fx = 0.5 * (maxLastSeen - d.lastSeen);
+      var changed = (d.fx !== fx);
+      if (changed && fx === 0 ) {
+        d.y = 0;
       }
+      d.fx = fx;
       return "translate(" + d.x + "," + d.y + ")";
     });
 
