@@ -61,6 +61,7 @@ var drag = d3.drag().on("drag", function dragmove(d, i) {
 });
 
 var maxAdded = 0;
+var maxLastSeen = 0;
 function handleJSON(json) {
   var nodes = simulation.nodes();
   var links = simulation.force("link").links();
@@ -86,6 +87,11 @@ function handleJSON(json) {
       // update stats
       ssid.lastSeen = request.lastSeen;
       ssid.count = request.count;
+
+      if (ssid.lastSeen > maxLastSeen) {
+        maxLastSeen = ssid.lastSeen
+      }
+
     }
     $.each(request.macs, function(address, count) {
       var mac = macs[address];
