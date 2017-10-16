@@ -62,6 +62,7 @@ var drag = d3.drag().on("drag", function dragmove(d, i) {
 
 var maxAdded = 0;
 var maxLastSeen = 0;
+var follow;
 function handleJSON(json) {
   var nodes = simulation.nodes();
   var links = simulation.force("link").links();
@@ -97,6 +98,9 @@ function handleJSON(json) {
 
       if (ssid.lastSeen > maxLastSeen) {
         maxLastSeen = ssid.lastSeen
+        if (!follow) {
+          follow = ssid;
+        }
       }
 
     }
@@ -198,7 +202,21 @@ function handleJSON(json) {
   mac.call(drag);
   ssid.call(drag);
 
+  ssid.filter(function(d) {
+    var changed = d.changed;
+    d.changed = false;
+    return changed;
+  }).interrupt("color")
+    .attr("stroke", "#00ff00")
+    .attr("stroke-width", 1)
+    .transition("color").duration(30000)
+      .attr("stroke-width", 0);
+
   simulation.on("tick", function(e, alpha) {
+    if (follow) {
+      svg.transition("pan").duration(3000).call(zoom.translateTo, follow.x, follow.y);
+      follow = null;
+    }
     mac.attr("transform", function(d, i) {
       return "translate(" + d.x + "," + d.y + ")";
     });
