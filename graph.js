@@ -214,7 +214,7 @@ function handleJSON(json) {
 
   simulation.on("tick", function(e, alpha) {
     if (follow) {
-      svg.transition("pan").duration(3000).call(zoom.translateTo, follow.x, follow.y);
+      svg.transition("pan").duration(3000).call(zoom.transform, d3.zoomIdentity.translate(width/2-follow.x, height/2-follow.y));
       follow = null;
     }
     mac.attr("transform", function(d, i) {
