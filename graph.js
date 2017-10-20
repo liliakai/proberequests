@@ -63,6 +63,7 @@ var drag = d3.drag().on("drag", function dragmove(d, i) {
 var maxAdded = 0;
 var maxLastSeen = 0;
 var follow;
+var autopilot = false;
 function handleJSON(json) {
   var nodes = simulation.nodes();
   var links = simulation.force("link").links();
@@ -213,7 +214,7 @@ function handleJSON(json) {
       .attr("stroke-width", 0);
 
   simulation.on("tick", function(e, alpha) {
-    if (follow) {
+    if (autopilot && follow) {
       svg.transition("pan").duration(3000).call(zoom.transform, d3.zoomIdentity.translate(width/2-follow.x, height/2-follow.y));
       follow = null;
     }
@@ -231,7 +232,10 @@ function handleJSON(json) {
   });
 }
 
-$('body').keydown(function(e) {
+body.keydown(function(e) {
+  if (e.which === ' '.charCodeAt(0)) { // left arrow
+    autopilot = !autopilot;
+  }
   if (e.which === 37) { // left arrow
     svg.transition("pan").call(zoom.translateBy, 100, 0);
   }
