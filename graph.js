@@ -39,6 +39,13 @@ var zoom = d3.zoom().on("zoom", function() {
 svg.call(zoom)
    .call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2));
 
+window.addEventListener('resize', function resize() {
+  width = body.outerWidth();
+  height = body.outerHeight();
+  svg .attr("width", width)
+      .attr("height", height);
+});
+
 var macs = {};
 var ssids = {};
 var simulation = d3.forceSimulation()
