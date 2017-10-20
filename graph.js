@@ -257,9 +257,8 @@ body.keydown(function(e) {
   }
 });
 
-
-//poll('probereq.json');
-test('probereq.json');
+poll('probereq.json');
+//poll('probereq-test.json');
 
 function poll(url) {
   $.getJSON(url, function(json) {
