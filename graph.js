@@ -257,12 +257,14 @@ body.keydown(function(e) {
   }
 });
 
+
 poll('probereq.json');
-//poll('probereq-test.json');
+//test('probereq.json');
 
 function poll(url) {
   $.getJSON(url, function(json) {
     handleJSON(json);
+  }).always(function() {
     setTimeout(function() { poll(url); }, 2000);
   });
 }

@@ -249,6 +249,7 @@ poll('probereq-test.json');
 function poll(url) {
   $.getJSON(url, function(json) {
     handleJSON(json);
+  }).always(function() {
     setTimeout(function() { poll(url); }, 2000);
   });
 }
